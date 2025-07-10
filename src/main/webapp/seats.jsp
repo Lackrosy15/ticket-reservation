@@ -30,7 +30,7 @@
     </script>
 </head>
 <body>
-<div id="error-message"></div>
+<div id="error-message">${errorMessage}</div>
 <form id="reserveForm" method="post" action="seats">
     <input type="hidden" id="seatId" name="seatId" />
     <input type="text" id="passportNumber" name="passportNumber" placeholder="Номер паспорта" required />

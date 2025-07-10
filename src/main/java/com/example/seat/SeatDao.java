@@ -8,7 +8,7 @@ public class SeatDao {
     private String user;
     private String password;
 
-    static  {
+    static {
         try {
             Class.forName("org.postgresql.Driver");
         } catch (ClassNotFoundException e) {
@@ -32,9 +32,9 @@ public class SeatDao {
              ResultSet rs = stmt.executeQuery("SELECT id, status, passport_number FROM seats ORDER BY id")) {
             while (rs.next()) {
                 seats.add(new Seat(
-                    rs.getInt("id"),
-                    rs.getString("status"),
-                    rs.getString("passport_number")
+                        rs.getInt("id"),
+                        rs.getString("status"),
+                        rs.getString("passport_number")
                 ));
             }
         } catch (SQLException e) {
@@ -46,10 +46,12 @@ public class SeatDao {
     public void reserveSeat(int seatId, String passportNumber) {
         try (Connection conn = DriverManager.getConnection(url, user, password);
              PreparedStatement ps = conn.prepareStatement(
-                 "UPDATE seats SET status='reserved', passport_number=? WHERE id=?")) {
+                     "UPDATE seats SET status='reserved', passport_number=? WHERE id=? AND (passport_number IS NULL or passport_number='')")) {
             ps.setString(1, passportNumber);
             ps.setInt(2, seatId);
-            ps.executeUpdate();
+            if (ps.executeUpdate() == 0) {
+                throw new SeatAlreadyReservedException("Место уже забронировано другим пользователем. Выберите другое!");
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -21,7 +21,12 @@ public class SeatServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int seatId = Integer.parseInt(req.getParameter("seatId"));
         String passportNumber = req.getParameter("passportNumber");
-        seatDao.reserveSeat(seatId, passportNumber);
-        resp.sendRedirect("seats");
+        try {
+            seatDao.reserveSeat(seatId, passportNumber);
+            resp.sendRedirect("seats");
+        } catch (SeatAlreadyReservedException e) {
+            req.setAttribute("errorMessage", e.getMessage());
+            doGet(req, resp);
+        }
     }
 } 

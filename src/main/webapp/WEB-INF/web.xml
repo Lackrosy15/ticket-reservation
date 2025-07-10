@@ -5,6 +5,16 @@
          version="3.1">
 
     <welcome-file-list>
-        <welcome-file>seats.jsp</welcome-file>
+        <welcome-file>SeatServlet</welcome-file>
     </welcome-file-list>
+
+    <servlet>
+        <servlet-name>SeatServlet</servlet-name>
+        <servlet-class>com.example.seat.SeatServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SeatServlet</servlet-name>
+        <url-pattern>/SeatServlet</url-pattern>
+    </servlet-mapping>
 </web-app> 
